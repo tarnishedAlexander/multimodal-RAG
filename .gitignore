@@ -1,2 +1,3 @@
 # Ignore the environment files
 .env
+__pycache__
