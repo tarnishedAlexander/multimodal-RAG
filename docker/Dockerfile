@@ -9,6 +9,7 @@ RUN apt-get update && \
     apt-get install -y python3-pip python3-dev && \
     apt-get install -y wget && \
     apt-get install -y nano vim && \
+    apt-get install -y zip unzip && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 

@@ -1,0 +1,22 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Resources:
+  RagLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src.lambda.handler.lambda_handler
+      Runtime: python3.9
+      CodeUri: .
+      MemorySize: 1024
+      Timeout: 60
+      Environment:
+        Variables:
+          S3_OUTPUT_BUCKET: ragpdfs2025
+          DYNAMODB_TABLE: rag-responses
+          GROK_API_KEY: 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
+      Policies:
+        - S3ReadPolicy:
+            BucketName: ragpdfs2025
+        - DynamoDBWritePolicy:
+            TableName: rag-responses
+        - AWSLambdaBasicExecutionRole

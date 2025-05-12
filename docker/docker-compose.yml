@@ -15,6 +15,7 @@ services:
 
     ports:
       - "8888:8888"
+      - "8000:8000"
     tty: true
     stdin_open: true
     privileged: true
@@ -22,9 +23,4 @@ services:
     volumes:
       - ../:/home/RAGProject
     shm_size: 5g
-    command: >
-      /bin/bash -c "
-        source /root/.bashrc &&
-        conda env create -f /home/RAGProject/environment.yaml &&
-        source activate rag 
-      "
+    command: /bin/bash

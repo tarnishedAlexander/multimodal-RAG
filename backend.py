@@ -21,67 +21,6 @@ GROK_API_KEY = os.getenv("GROK_API_KEY")
 
 llm = Groq(model="meta-llama/llama-4-scout-17b-16e-instruct", api_key=GROK_API_KEY)
 
-def get_doc_tools(
-    file_path: str,
-    name: str,
-) -> tuple:
-    # Settings.show_progress = False
-    
-    Settings.embed_model = HuggingFaceEmbedding(
-        model_name="BAAI/bge-small-en-v1.5"
-    )
-    
-    Settings.llm = Groq(
-        model="meta-llama/llama-4-scout-17b-16e-instruct",
-        api_key=GROK_API_KEY
-    )
-    
-    documents = SimpleDirectoryReader(input_files=[file_path]).load_data()
-    splitter = SentenceSplitter(chunk_size=512)
-    nodes = splitter.get_nodes_from_documents(documents)
-    vector_index = VectorStoreIndex(nodes)
-    
-    def vector_query(
-        query: str, 
-        page_numbers: Optional[List[str]] = None
-    ) -> str:
-    
-        page_numbers = page_numbers or []
-        metadata_dicts = [
-            {"key": "page_label", "value": p} for p in page_numbers
-        ]
-        
-        query_engine = vector_index.as_query_engine(
-            similarity_top_k=2,
-            filters=MetadataFilters.from_dicts(
-                metadata_dicts,
-                condition=FilterCondition.OR
-            )
-        )
-        response = query_engine.query(query)
-        return response
-        
-    
-    vector_query_tool = FunctionTool.from_defaults(
-        name=f"vector_tool_{name}",
-        fn=vector_query
-    )
-    
-    summary_index = SummaryIndex(nodes)
-    summary_query_engine = summary_index.as_query_engine(
-        response_mode="tree_summarize",
-        use_async=True,
-    )
-    summary_tool = QueryEngineTool.from_defaults(
-        name=f"summary_tool_{name}",
-        query_engine=summary_query_engine,
-        description=(
-            f"Useful for summarization questions related to {name}"
-        ),
-    )
-
-    return vector_query_tool, summary_tool
-
 nest_asyncio.apply()
 
 urls = [

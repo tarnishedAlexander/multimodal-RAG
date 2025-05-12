@@ -1,0 +1,5 @@
+{
+    "type": "query",
+    "query": "Summarize the document?",
+    "index_id": "1910.02490v3.pdf"
+  }
