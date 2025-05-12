@@ -1,0 +1,26 @@
+services:
+  cuda-jupyter:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: cuda_jupyter:latest
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+      - DISPLAY=$DISPLAY
+      - QT_X11_NO_MITSHM=1i
+      - DOCKER_UID=${DOCKER_UID}
+      - DOCKER_USER=${USER}
+
+    ports:
+      - "8888:8888"
+      - "8000:8000"
+    tty: true
+    stdin_open: true
+    privileged: true
+    working_dir: /home/RAGProject
+    volumes:
+      - ../:/home/RAGProject
+    shm_size: 5g
+    command: /bin/bash

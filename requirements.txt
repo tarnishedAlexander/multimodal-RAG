@@ -1,0 +1,15 @@
+llama_index==0.12.35
+torch
+transformers==4.51.3
+python-dotenv==1.1.0
+pinecone
+llama-index-llms-groq==0.3.1
+llama-index-embeddings-huggingface==0.5.4
+awscli
+boto3
+aws-sam-cli
+fastapi 
+uvicorn
+flask
+request
+gunicorn
